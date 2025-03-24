@@ -1,0 +1,166 @@
+;; configuration file/customization for emacs. Andrew Winnicki, 2025.
+
+;; theme + make things look nicer
+(setq inhibit-startup-message t)
+
+(scroll-bar-mode -1)        ; Disable visible scrollbar
+(tool-bar-mode -1)          ; Disable the toolbar
+(tooltip-mode -1)           ; Disable tooltips
+(set-fringe-mode 10)        ; Give some breathing room
+(menu-bar-mode -1)          ; Disable the menu bar
+
+;; Set up the visible bell
+(setq visible-bell t)
+
+;; font
+(set-face-attribute 'default nil :font "DejaVu Sans Mono Book" :height 120)
+
+(load-theme 'wombat)
+
+;; adding package installation
+(require 'package)
+(add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/"))
+(package-initialize)
+
+;; on a fresh install, pull all the archives. Otherwise, ignore
+(unless package-archive-contents
+  (package-refresh-contents))
+
+;; use-package
+(require 'use-package)
+(setq use-package-always-ensure t)
+
+;; lsp-mode
+(use-package lsp-mode
+  :init)
+(add-hook 'python-mode-hook #'lsp)
+(setq gc-cons-threshold 100000000) ;; setting to 100mb
+(setq read-process-output-max (* 1024 1024)) ;; 1mb
+
+;; swiper; like better search. But we'll use company-mode in lsp-mode
+(use-package swiper :ensure t)
+
+;; ivy mode for better code completion when finding/commands etc
+(use-package ivy
+  :diminish
+  :bind (("C-s" . swiper)
+         :map ivy-minibuffer-map
+         ("TAB" . ivy-alt-done)	
+         ("C-l" . ivy-alt-done)
+         ("C-j" . ivy-next-line)
+         ("C-k" . ivy-previous-line)
+         :map ivy-switch-buffer-map
+         ("C-k" . ivy-previous-line)
+         ("C-l" . ivy-done)
+         ("C-d" . ivy-switch-buffer-kill)
+         :map ivy-reverse-i-search-map
+         ("C-k" . ivy-previous-line)
+         ("C-d" . ivy-reverse-i-search-kill))
+  :config
+  (ivy-mode 1))
+
+;; company mode, for use in lsp-mode. Improved code completion
+(use-package company
+  :after lsp-mode
+  :hook (lsp-mode . company-mode)
+  :bind (:map company-active-map
+         ("<tab>" . company-complete-selection))
+        (:map lsp-mode-map
+         ("<tab>" . company-indent-or-complete-common))
+  :custom
+  (company-minimum-prefix-length 1)
+  (company-idle-delay 0.0))
+
+;; ;; lsp-mode, dap-mode for python debugging. >>>
+;;   (use-package dap-mode
+;;   :after lsp-mode
+;;   :commands dap-debug
+;;   :hook ((python-mode . dap-ui-mode) (python-mode . dap-mode))
+;;   :config
+;;   (require 'dap-python)
+;;   (setq dap-python-debugger 'debugpy)
+;;   (defun dap-python--pyenv-executable-find (command)
+;;     (with-venv (executable-find "python")))
+
+;;   (add-hook 'dap-stopped-hook
+;;             (lambda (arg) (call-interactively #'dap-hydra))))
+;; ;; <<< end
+
+;; building pdf-tools
+(use-package pdf-tools
+  :ensure t
+  :config
+  (pdf-tools-install)
+  (setq-default pdf-view-display-size 'fit-width))
+
+;; turn on line wrapping globally
+(global-visual-line-mode t)
+
+;; display line numbers, columns globally
+(global-display-line-numbers-mode 1)
+(setq column-number-mode t)
+
+;; >>> capture template, for journals. From James Stoup guide to emacs. >>>
+;; work log capture template
+(setq org-capture-templates
+      '(
+	("j" "Work Log Entry"
+	 entry (file+datetree "~/org/work-log.org")
+	 "* %?"
+	 :empty-lines 0)
+     
+        ("g" "General To-Do"
+         entry (file+headline "~/org/todos.org" "General Tasks")
+         "* TODO [#B] %?\n:Created: %T\n "
+         :empty-lines 0)
+      ))
+
+;; Must do this so the agenda knows where to look for my files
+(setq org-agenda-files '("~/org"))
+
+;; When a TODO is set to a done state, record a timestamp
+(setq org-log-done 'time)
+
+;; Associate all org files with org mode
+(add-to-list 'auto-mode-alist '("\\.org\\'" . org-mode))
+
+;; Make the indentation look nicer
+(add-hook 'org-mode-hook 'org-indent-mode)
+
+;; <<< end configurations taken after James Stoup. <<<
+
+;; emacs window should always show my system-name and the full path of the buffer, and in the minibuffer (second customization)
+(setq frame-title-format
+      (list (format "%s %%S: %%j " (system-name))
+        '(buffer-file-name "%f" (dired-directory dired-directory "%b"))))
+(defun show-file-name ()
+  "Show the full path file name in the minibuffer."
+  (interactive)
+  (message (buffer-file-name)))
+(global-set-key [C-f1] 'show-file-name) ; Or any other key you want
+
+;; add scroll bar to the right
+(setq scroll-bar-mode 'right)
+(scroll-bar-mode 1)
+
+;; >>> begin automatically generated code <<<
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(ede-project-directories
+   '("/home/blank-v1/Desktop/projects/myproject/include" "/home/blank-v1/Desktop/projects/myproject/src" "/home/blank-v1/Desktop/projects/myproject"))
+ '(package-archives
+   '(("melpa" . "https://melpa.org/packages/")
+     ("gnu" . "https://elpa.gnu.org/packages/")
+     ("nongnu" . "https://elpa.nongnu.org/nongnu/")))
+ '(package-selected-packages
+   '(company swiper ivy pyenv-mode dap-mode lsp-mode ## pdf-tools)))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
+;; <<< end automatically generated code <<<
