@@ -30,6 +30,13 @@
 (require 'use-package)
 (setq use-package-always-ensure t)
 
+;; which-key -- pops up a buffer after a 1s delay showing which keys avail
+(use-package which-key
+  :init (which-key-mode)
+  :diminish which-key-mode
+  :config
+  (setq which-key-idle-delay 1))
+
 ;; lsp-mode
 (use-package lsp-mode
   :init)
@@ -70,6 +77,28 @@
   :custom
   (company-minimum-prefix-length 1)
   (company-idle-delay 0.0))
+
+;; treemacs
+(use-package lsp-treemacs
+  :after lsp)
+
+;; projectile
+(use-package projectile
+  :diminish projectile-mode
+  :config (projectile-mode)
+  :custom ((projectile-completion-system 'ivy))
+  :bind-keymap
+  ("C-c p" . projectile-command-map)
+  :init
+  ;; NOTE: Set this to the folder where you keep your Git repos!
+  (when (file-directory-p "~/Desktop/projects")
+    (setq projectile-project-search-path '("~/Desktop/projects")))
+  (setq projectile-switch-project-action #'projectile-dired))
+
+;; magit
+(use-package magit
+  :custom
+  (magit-display-buffer-function #'magit-displaybuffer-same-window-except-diff-v1))
 
 ;; ;; lsp-mode, dap-mode for python debugging. >>>
 ;;   (use-package dap-mode
@@ -156,7 +185,7 @@
      ("gnu" . "https://elpa.gnu.org/packages/")
      ("nongnu" . "https://elpa.nongnu.org/nongnu/")))
  '(package-selected-packages
-   '(company swiper ivy pyenv-mode dap-mode lsp-mode ## pdf-tools)))
+   '(magit which-key projectile company swiper ivy pyenv-mode dap-mode lsp-mode ## pdf-tools)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.

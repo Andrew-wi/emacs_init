@@ -4,8 +4,8 @@
 ;;; -*- End Of Bookmark File Format Version Stamp -*-
 (("org-capture-last-stored"
  (filename . "~/org/work-log.org")
- (front-context-string . "**** Setting up ")
- (rear-context-string . "nment in emacs.\n")
- (position . 914)
- (last-modified 26593 60148 539660 4000))
+ (front-context-string . "**** Still confi")
+ (rear-context-string . "in the future. \n")
+ (position . 1139)
+ (last-modified 26594 10412 102245 943000))
 )
