@@ -1,1 +1,1 @@
-#s(hash-table size 65 test equal rehash-size 1.5 rehash-threshold 0.8125 data ("/home/blank-v1/Desktop/projects/diffushop/server.py" ((:point 467))))
+#s(hash-table size 65 test equal rehash-size 1.5 rehash-threshold 0.8125 data ("/home/blank-v1/Desktop/projects/advent_of_code_2024/1/1_distance.py" ((:point 149))))

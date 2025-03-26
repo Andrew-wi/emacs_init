@@ -1,4 +1,4 @@
-;; configuration file/customization for emacs. Andrew Winnicki, 2025.
+; configuration file/customization for emacs. Andrew Winnicki, 2025.
 
 ;; theme + make things look nicer
 (setq inhibit-startup-message t)
@@ -40,9 +40,40 @@
 ;; lsp-mode
 (use-package lsp-mode
   :init)
-(add-hook 'python-mode-hook #'lsp)
+;;(add-hook 'python-mode-hook #'lsp)
 (setq gc-cons-threshold 100000000) ;; setting to 100mb
 (setq read-process-output-max (* 1024 1024)) ;; 1mb
+
+;; python-mode
+(use-package python-mode
+  :ensure t
+  :hook (python-mode . lsp-deferred)
+  :custom
+  ;; NOTE: Set these if Python 3 is called "python3" on your system!
+  (python-shell-interpreter "python3")
+  (dap-python-executable "python3")
+  (dap-python-debugger 'debugpy)
+  :config
+  (require 'dap-python))
+
+;; dap-mode
+(use-package dap-mode
+  :after lsp-mode
+  :hook ((python-mode . dap-ui-mode) (python-mode . dap-mode))
+  :config
+  (require 'dap-python)
+  (setq dap-python-debugger 'debugpy))
+
+;; virtual environment support
+(use-package pyvenv
+  :config
+  (pyvenv-mode 1))
+
+;; flycheck for linting
+(use-package flycheck
+  :ensure t
+  :config
+  (add-hook 'after-init-hook #'global-flycheck-mode))
 
 ;; swiper; like better search. But we'll use company-mode in lsp-mode
 (use-package swiper :ensure t)
@@ -52,7 +83,7 @@
   :diminish
   :bind (("C-s" . swiper)
          :map ivy-minibuffer-map
-         ("TAB" . ivy-alt-done)	
+         ("TAB" . ivy-alt-done)
          ("C-l" . ivy-alt-done)
          ("C-j" . ivy-next-line)
          ("C-k" . ivy-previous-line)
@@ -98,34 +129,17 @@
 ;; magit
 (use-package magit)
 
-;; ;; lsp-mode, dap-mode for python debugging. >>>
-;;   (use-package dap-mode
-;;   :after lsp-mode
-;;   :commands dap-debug
-;;   :hook ((python-mode . dap-ui-mode) (python-mode . dap-mode))
-;;   :config
-;;   (require 'dap-python)
-;;   (setq dap-python-debugger 'debugpy)
-;;   (defun dap-python--pyenv-executable-find (command)
-;;     (with-venv (executable-find "python")))
-
-;;   (add-hook 'dap-stopped-hook
-;;             (lambda (arg) (call-interactively #'dap-hydra))))
-;; ;; <<< end
-
 ;; building pdf-tools
-(use-package pdf-tools
-  :ensure t
-  :config
-  (pdf-tools-install)
-  (setq-default pdf-view-display-size 'fit-width))
+(use-package pdf-tools)
+(pdf-tools-install)
 
 ;; turn on line wrapping globally
 (global-visual-line-mode t)
 
-;; display line numbers, columns globally
+;; display line numbers, columns globally except in pdf-viewer
 (global-display-line-numbers-mode 1)
 (setq column-number-mode t)
+(add-hook 'pdf-view-mode-hook (lambda () (display-line-numbers-mode -1)))
 
 ;; >>> capture template, for journals. From James Stoup guide to emacs. >>>
 ;; work log capture template
@@ -183,7 +197,7 @@
      ("gnu" . "https://elpa.gnu.org/packages/")
      ("nongnu" . "https://elpa.nongnu.org/nongnu/")))
  '(package-selected-packages
-   '(magit which-key projectile company swiper ivy pyenv-mode dap-mode lsp-mode ## pdf-tools)))
+   '(flycheck magit which-key projectile company swiper ivy pyenv-mode dap-mode lsp-mode ##)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.

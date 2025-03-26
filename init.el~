@@ -39,10 +39,26 @@
 
 ;; lsp-mode
 (use-package lsp-mode
-  :init)
-(add-hook 'python-mode-hook #'lsp)
+  :init
+  :config
+  (lsp-enable-which-key-integration t))
+;;(add-hook 'python-mode-hook #'lsp)
 (setq gc-cons-threshold 100000000) ;; setting to 100mb
 (setq read-process-output-max (* 1024 1024)) ;; 1mb
+
+;; python-mode
+(use-package python-mode
+  :ensure t
+  :hook (python-mode . lsp-deferred)
+  :custom
+  ;; NOTE: Set these if Python 3 is called "python3" on your system!
+  (python-shell-interpreter "python3"))
+
+;; flycheck for linting
+(use-package flycheck
+  :ensure t
+  :config
+  (add-hook 'after-init-hook #'global-flycheck-mode))
 
 ;; swiper; like better search. But we'll use company-mode in lsp-mode
 (use-package swiper :ensure t)
@@ -96,9 +112,7 @@
   (setq projectile-switch-project-action #'projectile-dired))
 
 ;; magit
-(use-package magit
-  :custom
-  (magit-display-buffer-function #'magit-displaybuffer-same-window-except-diff-v1))
+(use-package magit)
 
 ;; ;; lsp-mode, dap-mode for python debugging. >>>
 ;;   (use-package dap-mode
