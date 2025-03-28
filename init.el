@@ -184,6 +184,20 @@
 (setq scroll-bar-mode 'right)
 (scroll-bar-mode 1)
 
+;; latex with AuCTeX
+(use-package auctex
+  :ensure t)
+(add-hook 'LaTeX-mode-hook #'LaTeX-math-mode)
+
+;; open PDFs rendered with AUCTeX in pdf-tools
+(setq TeX-view-program-selection '((output-pdf "PDF Tools"))
+      TeX-source-correlate-start-server t)
+(add-hook 'TeX-after-compilation-finished-functions #'TeX-revert-document-buffer)
+
+;; add cdlatex functionality for intelligent TAB switching, ^ and _
+(use-package cdlatex)
+(add-hook 'LaTeX-mode-hook #'turn-on-cdlatex)
+
 ;; >>> begin automatically generated code <<<
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
@@ -197,7 +211,7 @@
      ("gnu" . "https://elpa.gnu.org/packages/")
      ("nongnu" . "https://elpa.nongnu.org/nongnu/")))
  '(package-selected-packages
-   '(flycheck magit which-key projectile company swiper ivy pyenv-mode dap-mode lsp-mode ##)))
+   '(cdlatex flycheck magit which-key projectile company swiper ivy pyenv-mode dap-mode lsp-mode ##)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
