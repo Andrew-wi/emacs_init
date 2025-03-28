@@ -189,10 +189,10 @@
   :ensure t)
 (add-hook 'LaTeX-mode-hook #'LaTeX-math-mode)
 
-;; open PDFs rendered with AUCTeX in pdf-tools
-(setq TeX-view-program-selection '((output-pdf "PDF Tools"))
-      TeX-source-correlate-start-server t)
-(add-hook 'TeX-after-compilation-finished-functions #'TeX-revert-document-buffer)
+;; ;; open PDFs rendered with AUCTeX in pdf-tools
+;; (setq TeX-view-program-selection '((output-pdf "PDF Tools"))
+;;       TeX-source-correlate-start-server t)
+;; (add-hook 'TeX-after-compilation-finished-functions #'TeX-revert-document-buffer)
 
 ;; add cdlatex functionality for intelligent TAB switching, ^ and _
 (use-package cdlatex)
