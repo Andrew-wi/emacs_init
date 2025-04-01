@@ -19,7 +19,9 @@
 
 ;; adding package installation
 (require 'package)
-(add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/"))
+
+(setq package-archives '(("melpa" . "https://melpa.org/packages/")
+                       '("org" . "https://orgmode.org/elpa/")))
 (package-initialize)
 
 ;; on a fresh install, pull all the archives. Otherwise, ignore
@@ -141,6 +143,13 @@
 (setq column-number-mode t)
 (add-hook 'pdf-view-mode-hook (lambda () (display-line-numbers-mode -1)))
 
+;; org-mode
+(use-package org
+  :config
+  (setq org-ellipsis " ▾"))
+
+(use-package org-bullets)
+
 ;; >>> capture template, for journals. From James Stoup guide to emacs. >>>
 ;; work log capture template
 (setq org-capture-templates
@@ -187,13 +196,27 @@
 ;; latex with AuCTeX
 (use-package auctex
   :ensure t)
+(add-hook 'LaTeX-mode-hook #'LaTeX-math-mode)
+
+(use-package reftex)
+(add-hook 'LaTeX-mode-hook 'turn-on-reftex)
+
+;; adding auctex new labels
+(add-hook 'LaTeX-mode-hook
+   (lambda ()
+     (LaTeX-add-environments
+      '("definition")
+      '("theorem" LaTeX-env-label)
+      '("axiom" LaTeX-env-label))))
+
+;; ;; open PDFs rendered with AUCTeX in pdf-tools
+;; (setq TeX-view-program-selection '((output-pdf "PDF Tools"))
+;;       TeX-source-correlate-start-server t)
+;; (add-hook 'TeX-after-compilation-finished-functions #'TeX-revert-document-buffer)
 
 ;; add cdlatex functionality for intelligent TAB switching, ^ and _
 (use-package cdlatex)
 (add-hook 'LaTeX-mode-hook #'turn-on-cdlatex)
-
-(setq TeX-auto-save t)
-(setq TeX-parse-self t)
 
 ;; >>> begin automatically generated code <<<
 (custom-set-variables
@@ -208,7 +231,7 @@
      ("gnu" . "https://elpa.gnu.org/packages/")
      ("nongnu" . "https://elpa.nongnu.org/nongnu/")))
  '(package-selected-packages
-   '(cdlatex flycheck magit which-key projectile company swiper ivy pyenv-mode dap-mode lsp-mode ##)))
+   '(org-bullets cdlatex flycheck magit which-key projectile company swiper ivy pyenv-mode dap-mode lsp-mode ##)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
