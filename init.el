@@ -32,6 +32,10 @@
 (require 'use-package)
 (setq use-package-always-ensure t)
 
+;; set up beacon cursor
+(use-package beacon)
+(beacon-mode 1)
+
 ;; which-key -- pops up a buffer after a 1s delay showing which keys avail
 (use-package which-key
   :init (which-key-mode)
@@ -246,8 +250,14 @@
 
 ;; latex with AuCTeX
 (use-package auctex
-  :ensure t)
-(add-hook 'LaTeX-mode-hook #'LaTeX-math-mode)
+  :ensure t
+  :config
+  (setq TeX-source-correlate-mode t)
+  (eval-after-load "tex"
+  '(define-key TeX-source-correlate-map [C-down-mouse-1]
+               #'TeX-view-mouse))
+  )
+;;(add-hook 'LaTeX-mode-hook #'LaTeX-math-mode)
 
 (use-package reftex)
 (add-hook 'LaTeX-mode-hook 'turn-on-reftex)
@@ -282,7 +292,7 @@
      ("gnu" . "https://elpa.gnu.org/packages/")
      ("nongnu" . "https://elpa.nongnu.org/nongnu/")))
  '(package-selected-packages
-   '(org-bullets cdlatex flycheck magit which-key projectile company swiper ivy pyenv-mode dap-mode lsp-mode ##)))
+   '(beacon org-bullets cdlatex flycheck magit which-key projectile company swiper ivy pyenv-mode dap-mode lsp-mode ##)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.

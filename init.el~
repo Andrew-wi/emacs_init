@@ -32,6 +32,10 @@
 (require 'use-package)
 (setq use-package-always-ensure t)
 
+;; set up beacon cursor
+(use-package beacon)
+(beacon-mode 1)
+
 ;; which-key -- pops up a buffer after a 1s delay showing which keys avail
 (use-package which-key
   :init (which-key-mode)
@@ -146,13 +150,58 @@
 ;; org-mode
 (use-package org
   :config
-  (setq org-ellipsis " ▾"))
+  (setq org-ellipsis " ▾")
+  (setq org-agenda-start-with-log-mode t)
+  (setq org-log-done 'time)
+  (setq org-log-into-drawer t)
+  
+  ;; Must do this so the agenda knows where to look for my files
+  (setq org-agenda-files
+	'("~/org/todos.org"
+	  "~/org/work-log.org"
+	  "~/org/habits.org"
+          "~/org/active_courses"))
 
-(use-package org-bullets)
+  (require 'org-habit)
+  (add-to-list 'org-modules 'org-habit)
+  (setq org-habit-graph-column 60)
 
-;; >>> capture template, for journals. From James Stoup guide to emacs. >>>
-;; work log capture template
-(setq org-capture-templates
+  (setq org-todo-keywords
+	'((sequence "TODO(t)" "NEXT(n)" "|" "DONE(d!)")))
+
+  (setq org-todo-keyword-faces
+        '(("TODO" . (:foreground "GoldenRod" :weight bold))
+          ("NEXT" . (:foreground "Cyan" :background "DarkGreen" :weight bold))
+          ("DONE" . (:foreground "LimeGreen" :weight bold))))
+
+  (setq org-tag-alist
+    '((:startgroup)
+       ; Put mutually exclusive tags here
+       (:endgroup)
+       ("@academics" . ?A)
+       ("notes" . ?n)
+       ("idea" . ?i)
+       ("readings" . ?r)))
+
+  ;; Tag colors
+  (setq org-tag-faces
+      '(
+        ("@academics"  . (:foreground "mediumPurple1" :weight bold))
+        ("notes"   . (:foreground "royalblue1"    :weight bold))
+        ("idea"  . (:foreground "forest green"  :weight bold))
+        ("readings"        . (:foreground "sienna"        :weight bold))
+        ))
+    
+  (setq org-refile-targets
+    '(("todos.org" :maxlevel . 1)
+      ("work-log.org" :maxlevel . 1)))
+
+    ;; Save Org buffers after refiling!
+  (advice-add 'org-refile :after 'org-save-all-org-buffers)
+  
+  ;; >>> capture template, for journals. From James Stoup guide to emacs. >>>
+  ;; work log capture template
+  (setq org-capture-templates
       '(
 	("j" "Work Log Entry"
 	 entry (file+datetree "~/org/work-log.org")
@@ -163,21 +212,27 @@
          entry (file+headline "~/org/todos.org" "General Tasks")
          "* TODO [#B] %?\n:Created: %T\n "
          :empty-lines 0)
-      ))
+	))
 
-;; Must do this so the agenda knows where to look for my files
-(setq org-agenda-files '("~/org"))
+  ;; <<< end configurations taken after James Stoup. <<<
 
-;; When a TODO is set to a done state, record a timestamp
-(setq org-log-done 'time)
+  (define-key global-map (kbd "C-c a")
+	      (lambda () (interactive) (org-agenda)))
+
+  (define-key global-map (kbd "C-c c")
+	      (lambda () (interactive) (org-capture)))
+  )
+
+;; make indentation look nicer
+(add-hook 'org-mode-hook 'org-indent-mode)
 
 ;; Associate all org files with org mode
 (add-to-list 'auto-mode-alist '("\\.org\\'" . org-mode))
 
-;; Make the indentation look nicer
-(add-hook 'org-mode-hook 'org-indent-mode)
-
-;; <<< end configurations taken after James Stoup. <<<
+;; make bullets look nicer
+(use-package org-bullets
+  :after org
+  :hook (org-mode . org-bullets-mode))
 
 ;; emacs window should always show my system-name and the full path of the buffer, and in the minibuffer (second customization)
 (setq frame-title-format
@@ -195,17 +250,23 @@
 
 ;; latex with AuCTeX
 (use-package auctex
-  :ensure t)
-(add-hook 'LaTeX-mode-hook #'LaTeX-math-mode)
+  :ensure t
+  :config
+  (setq TeX-source-correlate-mode t)
+  (eval-after-load "tex"
+  '(define-key TeX-source-correlate-map [C-down-mouse-1]
+               #'TeX-view-mouse))
+  )
+;;(add-hook 'LaTeX-mode-hook #'LaTeX-math-mode)
 
 (use-package reftex)
 (add-hook 'LaTeX-mode-hook 'turn-on-reftex)
 
-;; adding auctex new labels
+;; adding auctex new environments
 (add-hook 'LaTeX-mode-hook
    (lambda ()
      (LaTeX-add-environments
-      '("definition")
+      '("definition" LaTeX-env-label)
       '("theorem" LaTeX-env-label)
       '("axiom" LaTeX-env-label))))
 
