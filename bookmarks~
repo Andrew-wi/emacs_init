@@ -3,15 +3,15 @@
 ;;; nevertheless, you probably don't want to edit it.
 ;;; -*- End Of Bookmark File Format Version Stamp -*-
 (("org-refile-last-stored"
- (filename . "~/org/todos.org")
+ (filename . "~/org/Archive.org")
  (front-context-string . "** DONE [#B] Set")
- (rear-context-string . "cat with Lean. \n")
- (position . 1441)
- (last-modified 26603 18293 313987 996000))
+ (rear-context-string . "3-31 Mon 23:31>\n")
+ (position . 248)
+ (last-modified 26605 40033 861480 748000))
 ("org-capture-last-stored"
  (filename . "~/org/work-log.org")
- (front-context-string)
- (rear-context-string . "25-03-31 Monday\n")
- (position . 2588)
- (last-modified 26603 21555 876507 618000))
+ (front-context-string . "**** Finished mi")
+ (rear-context-string . "04-02 Wednesday\n")
+ (position . 2895)
+ (last-modified 26605 20116 895126 427000))
 )

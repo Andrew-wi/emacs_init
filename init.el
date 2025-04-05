@@ -154,6 +154,13 @@
   (setq org-agenda-start-with-log-mode t)
   (setq org-log-done 'time)
   (setq org-log-into-drawer t)
+
+  ;; latex startup: latex preview + prettify
+  (setq org-startup-with-latex-preview t)
+  ;;(setq org-pretty-entities t)
+  
+  ;; bigger latex fragment
+  (plist-put org-format-latex-options :scale 1.5)
   
   ;; Must do this so the agenda knows where to look for my files
   (setq org-agenda-files
@@ -181,7 +188,8 @@
        ("@academics" . ?A)
        ("notes" . ?n)
        ("idea" . ?i)
-       ("readings" . ?r)))
+       ("readings" . ?r)
+       ("problems" . ?p)))
 
   ;; Tag colors
   (setq org-tag-faces
@@ -194,7 +202,8 @@
     
   (setq org-refile-targets
     '(("todos.org" :maxlevel . 1)
-      ("work-log.org" :maxlevel . 1)))
+      ("work-log.org" :maxlevel . 1)
+      ("Archive.org" :maxlevel . 1)))
 
     ;; Save Org buffers after refiling!
   (advice-add 'org-refile :after 'org-save-all-org-buffers)
@@ -223,6 +232,19 @@
 	      (lambda () (interactive) (org-capture)))
   )
 
+;; fragment toggling; will need this in org mode
+(use-package org-fragtog)
+(add-hook 'org-mode-hook 'org-fragtog-mode)
+
+;; toggle appearance of syntax when cursor is inside links etc.
+;;(use-package org-appear
+  :config
+  (setq org-appear-autolinks t))
+;;(add-hook 'org-mode-hook 'org-appear-mode)
+
+;; use cdlatex mode in org files
+(add-hook 'org-mode-hook #'turn-on-org-cdlatex)
+
 ;; make indentation look nicer
 (add-hook 'org-mode-hook 'org-indent-mode)
 
@@ -234,7 +256,8 @@
   :after org
   :hook (org-mode . org-bullets-mode))
 
-;; emacs window should always show my system-name and the full path of the buffer, and in the minibuffer (second customization)
+;; emacs window should always show my system-name and the full
+;; path of the buffer, and in the minibuffer (second customization)
 (setq frame-title-format
       (list (format "%s %%S: %%j " (system-name))
         '(buffer-file-name "%f" (dired-directory dired-directory "%b"))))
@@ -292,7 +315,7 @@
      ("gnu" . "https://elpa.gnu.org/packages/")
      ("nongnu" . "https://elpa.nongnu.org/nongnu/")))
  '(package-selected-packages
-   '(beacon org-bullets cdlatex flycheck magit which-key projectile company swiper ivy pyenv-mode dap-mode lsp-mode ##)))
+   '(org-appear org-appear-mode org-fragtog beacon org-bullets cdlatex flycheck magit which-key projectile company swiper ivy pyenv-mode dap-mode lsp-mode ##)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
