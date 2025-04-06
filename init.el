@@ -194,10 +194,11 @@
   ;; Tag colors
   (setq org-tag-faces
       '(
-        ("@academics"  . (:foreground "mediumPurple1" :weight bold))
-        ("notes"   . (:foreground "royalblue1"    :weight bold))
-        ("idea"  . (:foreground "forest green"  :weight bold))
-        ("readings"        . (:foreground "sienna"        :weight bold))
+        ("@academics"	.	(:foreground "mediumPurple1" :weight bold))
+        ("notes"	.	(:foreground "royalblue1"    :weight bold))
+        ("idea"		.	(:foreground "forest green"  :weight bold))
+        ("readings"	.	(:foreground "sienna"        :weight bold))
+	("problems"     .	(:foreground "red"           :weight bold))
         ))
     
   (setq org-refile-targets
@@ -238,8 +239,8 @@
 
 ;; toggle appearance of syntax when cursor is inside links etc.
 ;;(use-package org-appear
-  :config
-  (setq org-appear-autolinks t))
+;;  :config
+;;  (setq org-appear-autolinks t))
 ;;(add-hook 'org-mode-hook 'org-appear-mode)
 
 ;; use cdlatex mode in org files
@@ -310,6 +311,7 @@
  ;; If there is more than one, they won't work right.
  '(ede-project-directories
    '("/home/blank-v1/Desktop/projects/myproject/include" "/home/blank-v1/Desktop/projects/myproject/src" "/home/blank-v1/Desktop/projects/myproject"))
+ '(org-tags-column 90)
  '(package-archives
    '(("melpa" . "https://melpa.org/packages/")
      ("gnu" . "https://elpa.gnu.org/packages/")
