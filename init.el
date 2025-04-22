@@ -1,4 +1,4 @@
-; configuration file/customization for emacs. Andrew Winnicki, 2025.
+;; configuration file/customization for emacs. Andrew Winnicki, 2025.
 
 ;; theme + make things look nicer
 (setq inhibit-startup-message t)
@@ -167,7 +167,8 @@
 	'("~/org/todos.org"
 	  "~/org/work-log.org"
 	  "~/org/habits.org"
-          "~/org/active_courses"))
+          "~/org/active_courses"
+	  "~/org/projects/engineering/software"))
 
   (require 'org-habit)
   (add-to-list 'org-modules 'org-habit)
