@@ -293,7 +293,11 @@
      (LaTeX-add-environments
       '("definition" LaTeX-env-label)
       '("theorem" LaTeX-env-label)
-      '("axiom" LaTeX-env-label))))
+      '("axiom" LaTeX-env-label)
+      '("tikzcd" LaTeX-env-label))))
+
+;; making cdlatex realize tikzcd is a math mode
+(add-hook 'LaTeX-mode-hook #'(lambda () (texmathp-compile))) (custom-set-variables '(texmathp-tex-commands (append texmathp-tex-commands-default '(("tikzcd" env-on)))))
 
 ;; ;; open PDFs rendered with AUCTeX in pdf-tools
 ;; (setq TeX-view-program-selection '((output-pdf "PDF Tools"))

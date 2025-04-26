@@ -4,10 +4,10 @@
 ;;; -*- End Of Bookmark File Format Version Stamp -*-
 (("org-refile-last-stored"
  (filename . "~/org/Archive.org")
- (front-context-string . "** DONE [#B] Set")
- (rear-context-string . "3-31 Mon 23:31>\n")
- (position . 248)
- (last-modified 26605 40033 861480 748000))
+ (front-context-string . "** DONE Lectures")
+ (rear-context-string . "u 17:29]\n:END:\n\n")
+ (position . 1110)
+ (last-modified 26634 22838 312672 803000))
 ("org-capture-last-stored"
  (filename . "~/org/work-log.org")
  (front-context-string . "**** Finished Pr")
