@@ -299,13 +299,19 @@
 ;; making cdlatex realize tikzcd is a math mode
 (add-hook 'LaTeX-mode-hook #'(lambda () (texmathp-compile))) (custom-set-variables '(texmathp-tex-commands (append texmathp-tex-commands-default '(("tikzcd" env-on)))))
 
+;; adding to list of commands lVert and rVert with tab completion
 ;; ;; open PDFs rendered with AUCTeX in pdf-tools
 ;; (setq TeX-view-program-selection '((output-pdf "PDF Tools"))
 ;;       TeX-source-correlate-start-server t)
 ;; (add-hook 'TeX-after-compilation-finished-functions #'TeX-revert-document-buffer)
 
 ;; add cdlatex functionality for intelligent TAB switching, ^ and _
-(use-package cdlatex)
+(use-package cdlatex
+  :after cdlatex
+  :init
+  (add-to-list 'cdlatex-command-alist '("lrv" "Insert a \\left\\Vert \\right\\Vert pair"
+				       "\\left\\Vert ? \\right\\Vert"
+				       cdlatex-position-cursor nil nil t)))
 (add-hook 'LaTeX-mode-hook #'turn-on-cdlatex)
 
 ;; >>> begin automatically generated code <<<
