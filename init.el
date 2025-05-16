@@ -311,7 +311,22 @@
   :init
   (add-to-list 'cdlatex-command-alist '("lrv" "Insert a \\left\\Vert \\right\\Vert pair"
 				       "\\left\\Vert ? \\right\\Vert"
-				       cdlatex-position-cursor nil nil t)))
+				       cdlatex-position-cursor nil nil t))
+  (add-to-list 'cdlatex-command-alist '("tx" "Insert a \\text{} block"
+                          	        "\\text{?}"
+					cdlatex-position-cursor nil nil t))
+  (add-to-list 'cdlatex-command-alist '("xr" "Insert a \\xrightarrow{}"
+					"\\xrightarrow{?}"
+					cdlatex-position-cursor nil nil t))
+  (add-to-list 'cdlatex-command-alist '("op" "Insert an \\oplus"
+					"\\oplus"
+					cdlatex-position-cursor nil nil t))
+  (add-to-list 'cdlatex-command-alist '("ot" "Insert an \\otimes"
+					"\\otimes"
+					cdlatex-position-cursor nil nil t))
+  (add-to-list 'cdlatex-command-alist '("bul" "Insert a \\bullet"
+					"\\bullet"
+					cdlatex-position-cursor nil nil t)))
 (add-hook 'LaTeX-mode-hook #'turn-on-cdlatex)
 
 ;; >>> begin automatically generated code <<<
