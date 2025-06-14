@@ -10,8 +10,8 @@
  (last-modified 26634 22838 312672 803000))
 ("org-capture-last-stored"
  (filename . "~/org/todos.org")
- (front-context-string . "** TODO [#B] Fig")
- (rear-context-string . "4-03 Thu 09:26>\n")
- (position . 3127)
- (last-modified 26653 44041 530246 899000))
+ (front-context-string . "** TODO [#B] Rea")
+ (rear-context-string . "5-09 Fri 09:17>\n")
+ (position . 3491)
+ (last-modified 26672 38762 136296 902000))
 )
